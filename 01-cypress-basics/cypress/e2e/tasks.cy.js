@@ -22,4 +22,26 @@ describe('tasks management', () => {
       .click();
     cy.get('dialog.modal').should('not.exist');
   });
+
+  it('should create a new task', () => {
+    cy.visit('http://localhost:5173/');
+
+    cy.get('button')
+      .contains(/add task/i)
+      .click();
+
+    cy.get('input#title').type('New Task');
+    cy.get('textarea#summary').type('New Task Summary');
+    cy.get('select#category').select(3);
+
+    cy.get('.modal button')
+      .contains(/add task/i)
+      .click();
+    cy.get('dialog.modal').should('not.exist');
+
+    cy.get('ul.task-list li').should('have.length', 1);
+
+    cy.get('.task h2').contains('New Task');
+    cy.get('.task p').contains('New Task Summary');
+  });
 });
